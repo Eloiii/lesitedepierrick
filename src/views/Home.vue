@@ -1,4 +1,29 @@
 <script setup>
+import {ref} from 'vue'
+import {useCollection, useFirestore} from 'vuefire'
+import {addDoc, collection} from 'firebase/firestore'
+
+const db = useFirestore()
+let messages = useCollection(collection(db, 'messages'))
+
+function getMessages() {
+  return messages.value.sort(
+      (objA, objB) => Number(objA.date) - Number(objB.date),
+  );
+}
+
+
+let input = ref("")
+
+async function validate() {
+  const docRef = await addDoc(collection(db, 'messages'), {
+    date: new Date(),
+    content: input.value
+  });
+  input.value = ""
+  // messages.value = useCollection(collection(db, 'messages'))
+  // console.log(input.value)
+}
 
 </script>
 
@@ -24,6 +49,31 @@
   <section class="texte">
     <div>
       <a href="/" class="title">Pierricklamerde.fr !!</a>
+    </div>
+    <div class="messages">
+      <div class="messages-container">
+        <span v-for="message in getMessages()" :key="message.id" v-if="message !== null" class="content">
+          <span class="date" v-if="message.date">
+            Le {{
+              message.date.toDate().toLocaleDateString('fr-FR',
+                  {
+                    weekday: "long",
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })
+            }}
+           :
+          </span>
+          {{ message.content }}
+        </span>
+      </div>
+      <div class="text-input">
+        <input id="text" name="text" placeholder="encore une dinguerie ?" required type="text" v-model="input"
+               @keydown.enter="validate">
+      </div>
     </div>
   </section>
 </template>
@@ -52,8 +102,8 @@ html {
 .images {
   z-index: 0;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   height: 100vh;
   width: 100vw;
   display: grid;
@@ -66,12 +116,39 @@ html {
 .texte {
   z-index: 99;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   height: 100vh;
   width: 100vw;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-flow: column wrap;
+}
+
+.messages {
+  margin-top: 10vh;
+}
+
+.messages-container {
+  width: 40vw;
+  height: 60vh;
+  border: dot-dash black;
+  background: rgba(255, 255, 0, .4);
+  padding: 15px 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: auto;
+  min-height: 0;
+}
+
+
+.text-input input {
+  width: 100%;
+}
+
+.date {
+  color: lightgray;
 }
 
 .tete1 {
