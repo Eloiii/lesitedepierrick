@@ -92,7 +92,7 @@ html {
 }
 
 .title {
-  font-size: 4em;
+  font-size: 4vmax;
   font-family: "Impact", Serif;
   font-style: italic;
   font-weight: bolder;
@@ -130,7 +130,7 @@ html {
 }
 
 .messages-container {
-  width: 40vw;
+  width: 60vw;
   height: 60vh;
   border: dot-dash black;
   background: rgba(255, 255, 0, .4);
@@ -144,7 +144,7 @@ html {
 
 
 .text-input input {
-  width: 100%;
+  width: 60vw;
 }
 
 .date {
