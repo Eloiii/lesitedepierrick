@@ -6,6 +6,15 @@ import {addDoc, collection} from 'firebase/firestore'
 const db = useFirestore()
 let messages = useCollection(collection(db, 'messages'))
 
+function moveTete() {
+  const tete = document.querySelector('.moving-tete')
+  // console.log(tete.style)
+  tete.style.top = parseInt(tete.style.top, 10) + 3 + "px"
+  tete.style.left = parseInt(tete.style.left, 10) + 3 + "px"
+}
+
+setInterval(moveTete, 5)
+
 function getMessages() {
   return messages.value.sort(
       (objA, objB) => Number(objA.date) - Number(objB.date),
@@ -28,6 +37,7 @@ async function validate() {
 </script>
 
 <template>
+  <img class="moving-tete" style="top: 1px; left: 1px" src="../assets/tete2.jpg"/>
   <section class="images">
     <div class="tete1 container">
       <img class="tete" src="../assets/tete.jpeg"/>
@@ -43,7 +53,6 @@ async function validate() {
     </div>
     <div class="tete4 container">
       <img class="tete" src="../assets/tete.jpeg"/>
-
     </div>
   </section>
   <section class="texte">
@@ -100,7 +109,7 @@ html {
 }
 
 .images {
-  z-index: 0;
+  z-index: 1;
   position: absolute;
   top: 0;
   left: 0;
@@ -184,6 +193,16 @@ html {
   height: 20vh;
   border-radius: 50%;
   animation: rotation 2s infinite linear;
+}
+
+.moving-tete {
+  overflow: hidden;
+  position: absolute;
+  z-index: 2;
+  width: 15vw;
+  height: 20vh;
+  border-radius: 25%;
+  animation: rotation 8s infinite linear;
 }
 
 
