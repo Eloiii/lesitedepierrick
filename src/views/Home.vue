@@ -23,15 +23,17 @@ function getMessages() {
 
 
 let input = ref("")
+let name = ref("")
 
 async function validate() {
+  const realName = name.value === "" ? "Anonyme" : name.value
   const docRef = await addDoc(collection(db, 'messages'), {
     date: new Date(),
-    content: input.value
+    content: input.value,
+    who: realName
   });
+  name.value = ""
   input.value = ""
-  // messages.value = useCollection(collection(db, 'messages'))
-  // console.log(input.value)
 }
 
 </script>
@@ -73,15 +75,16 @@ async function validate() {
                     hour: "2-digit",
                     minute: "2-digit"
                   })
-            }}
+            }}, de {{message.who}}
            :
           </span>
           {{ message.content }}
         </span>
       </div>
-      <div class="text-input">
+      <div class="inputs">
+        <input id="nom" name="nom" placeholder="c ki ki écrit" required type="text" v-model="name" class="name-input">
         <input id="text" name="text" placeholder="encore une dinguerie ?" required type="text" v-model="input"
-               @keydown.enter="validate">
+               @keydown.enter="validate" class="text-input">
       </div>
     </div>
   </section>
@@ -152,8 +155,16 @@ html {
 }
 
 
-.text-input input {
+.inputs {
   width: 60vw;
+}
+
+.text-input {
+  width: 90%;
+}
+
+.name-input {
+  width:10%;
 }
 
 .date {
