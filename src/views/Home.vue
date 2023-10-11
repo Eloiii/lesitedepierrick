@@ -1,19 +1,35 @@
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import {useCollection, useFirestore} from 'vuefire'
 import {addDoc, collection} from 'firebase/firestore'
 
 const db = useFirestore()
 let messages = useCollection(collection(db, 'messages'))
 
+onMounted(() => {
+  const tete = document.querySelector('.moving-tete')
+  const windowHeight = window.innerHeight + 100
+  const windowWidth = window.innerWidth + 100
+  tete.style.top = Math.round(Math.random() * windowHeight) + "px"
+  tete.style.left = Math.round(Math.random() * windowWidth) + "px"
+})
+
 function moveTete() {
   const tete = document.querySelector('.moving-tete')
-  // console.log(tete.style)
-  tete.style.top = parseInt(tete.style.top, 10) + 3 + "px"
-  tete.style.left = parseInt(tete.style.left, 10) + 3 + "px"
+  const windowHeight = window.innerHeight + 100
+  const windowWidth = window.innerWidth + 100
+  let newValTop = parseInt(tete.style.top, 10) + 2
+  let newValLeft = parseInt(tete.style.left, 10) + 2
+  if(newValTop >= windowHeight)
+    newValTop = -300
+  if(newValLeft >= windowWidth)
+    newValLeft = -300
+  tete.style.top =  newValTop + "px"
+  tete.style.left = newValLeft + "px"
+
 }
 
-setInterval(moveTete, 5)
+setInterval(moveTete, 10)
 
 function getMessages() {
   return messages.value.sort(
@@ -65,7 +81,7 @@ async function validate() {
       <div class="messages-container">
         <span v-for="message in getMessages()" :key="message.id" v-if="message !== null" class="content">
           <span class="date" v-if="message.date">
-            Le {{
+            {{
               message.date.toDate().toLocaleDateString('fr-FR',
                   {
                     weekday: "long",
@@ -154,6 +170,10 @@ html {
   min-height: 0;
 }
 
+.content {
+  padding: 0.5vh 0;
+  font-size: 1.1em;
+}
 
 .inputs {
   width: 60vw;
@@ -168,7 +188,7 @@ html {
 }
 
 .date {
-  color: lightgray;
+  color: lightyellow;
 }
 
 .tete1 {
