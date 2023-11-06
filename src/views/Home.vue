@@ -78,7 +78,9 @@ async function validate() {
       <a href="/" class="title">Pierricklamerde.fr !!</a>
     </div>
     <div class="messages">
-      <div class="messages-container">
+      <img class="tete-cote" width="300" height="500" src="../assets/tete5.jpg"/>
+      <div>
+        <div class="messages-container">
         <span v-for="message in getMessages()" :key="message.id" v-if="message !== null" class="content">
           <span class="date" v-if="message.date">
             {{
@@ -102,6 +104,8 @@ async function validate() {
         <input id="text" name="text" placeholder="encore une dinguerie ?" required type="text" v-model="input"
                @keydown.enter="validate" class="text-input">
       </div>
+      </div>
+      <img class="tete-cote" src="../assets/tete4.jpg" width="300" height="500"/>
     </div>
   </section>
 </template>
@@ -110,7 +114,7 @@ async function validate() {
 html {
   min-height: 100%;
   background: linear-gradient(rgba(255, 0, 0, 1) 0%, rgba(255, 154, 0, 1) 10%, rgba(208, 222, 33, 1) 20%, rgba(79, 220, 74, 1) 30%, rgba(63, 218, 216, 1) 40%, rgba(47, 201, 226, 1) 50%, rgba(28, 127, 238, 1) 60%, rgba(95, 21, 242, 1) 70%, rgba(186, 12, 248, 1) 80%, rgba(251, 7, 217, 1) 90%, rgba(255, 0, 0, 1) 100%) 0 0/100% 200%;
-  animation: a 2s linear infinite;
+  animation: a 8s linear infinite;
 }
 
 @keyframes a {
@@ -155,6 +159,9 @@ html {
 
 .messages {
   margin-top: 10vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .messages-container {
@@ -223,7 +230,20 @@ html {
   width: 15vw;
   height: 20vh;
   border-radius: 50%;
-  animation: rotation 2s infinite linear;
+  animation: rotation 6s infinite linear;
+}
+
+@media screen and (max-width: 1000px) {
+  .tete-cote {
+    display: none;
+  }
+}
+
+
+.tete-cote {
+  padding: 1.5vw 1.5vh;
+  //width: 15vw;
+  //height: 20vh;
 }
 
 .moving-tete {
